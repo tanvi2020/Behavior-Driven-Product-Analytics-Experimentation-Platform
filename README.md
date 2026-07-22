@@ -1,4 +1,4 @@
-# Scalable-Product-Analytics-Experimentation-Platform-
+# Behavior-Driven Product Analytics & Experimentation Platform -
 
 ## Overview
 
