@@ -1,0 +1,2 @@
+control_conversion_rate,treatment_conversion_rate,absolute_lift,relative_lift,z_statistic,p_value,ci_lower_bound,ci_upper_bound,srm_detected,srm_p_value,assignment_valid,any_guardrail_failed
+0.10386965376782077,0.14734774066797643,0.04347808690015566,0.418583150352479,2.071233561315941,0.03833697466058639,0.0025338970874667147,0.08442227671284461,False,0.5692136494737109,True,False
