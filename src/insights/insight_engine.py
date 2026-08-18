@@ -6,7 +6,28 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 OUTPUT_PATH = PROCESSED_DIR / "product_insights.csv"
+import sys
+from pathlib import Path
 
+import pandas as pd
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.append(str(SRC_DIR))
+
+from config.settings import (
+    ALPHA,
+    COUNTRY_LOW_GAP_THRESHOLD,
+    COUNTRY_HIGH_GAP_THRESHOLD,
+    COUNTRY_HIGH_PRIORITY_LOW_GAP,
+    COUNTRY_HIGH_PRIORITY_HIGH_GAP,
+)
+
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+OUTPUT_PATH = PROCESSED_DIR / "product_insights.csv"
 
 def load_funnel_metrics():
     """
@@ -90,8 +111,8 @@ def load_country_metrics():
 
 def detect_country_opportunities(
     country_df,
-    low_gap_threshold=-0.02,
-    high_gap_threshold=0.02,
+    low_gap_threshold=COUNTRY_LOW_GAP_THRESHOLD,
+    high_gap_threshold=COUNTRY_HIGH_GAP_THRESHOLD,
 ):
     """
     Compare each country's conversion rate against
@@ -141,7 +162,7 @@ def detect_country_opportunities(
 
             priority = (
                 "HIGH"
-                if gap <= -0.04
+                if gap <= COUNTRY_HIGH_PRIORITY_LOW_GAP
                 else "MEDIUM"
             )
 
@@ -172,7 +193,7 @@ def detect_country_opportunities(
 
             priority = (
                 "HIGH"
-                if gap >= 0.04
+                if gap >= COUNTRY_HIGH_PRIORITY_HIGH_GAP
                 else "MEDIUM"
             )
 
@@ -225,7 +246,7 @@ def load_experiment_summary():
 
 def interpret_experiment(
     experiment_summary_df,
-    alpha=0.05,
+    alpha=ALPHA,
 ):
     """
     Combine statistical evidence, experiment health,

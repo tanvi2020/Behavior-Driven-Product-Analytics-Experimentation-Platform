@@ -4,12 +4,26 @@ import hashlib
 import numpy as np
 import pandas as pd
 
+import sys
+from pathlib import Path
+import hashlib
+
+import numpy as np
+import pandas as pd
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.append(str(SRC_DIR))
+
+from config.settings import RANDOM_SEED
 
 # ---------------------------------------------------------
 # 1. Reproducibility
 # ---------------------------------------------------------
 
-RANDOM_SEED = 42
 rng = np.random.default_rng(RANDOM_SEED)
 
 

@@ -4,6 +4,16 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm, chisquare
 
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.append(str(SRC_DIR))
+
+from config.settings import ALPHA
 
 # ---------------------------------------------------------
 # 1. Load raw events
@@ -446,7 +456,7 @@ def make_experiment_decision(
     srm_result: dict,
     assignment_validation: dict,
     guardrail_result: dict,
-    alpha: float = 0.05,
+    alpha: float = ALPHA,
 ) -> str:
 
     if srm_result["srm_detected"]:
