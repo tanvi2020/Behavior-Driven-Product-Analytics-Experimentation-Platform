@@ -64,6 +64,10 @@ def load_data():
         PROCESSED_DIR / "device_type_metrics.csv"
     )
 
+    product_insights = pd.read_csv(
+        PROCESSED_DIR / "product_insights.csv"
+    )
+
     return {
         "core": core_metrics,
         "funnel": funnel_metrics,
@@ -73,6 +77,7 @@ def load_data():
         "country": country_metrics,
         "platform": platform_metrics,
         "device": device_metrics,
+        "insights": product_insights,
     }
 
 
@@ -499,11 +504,75 @@ for title, filename in diagnostic_figures:
 
 
 # ---------------------------------------------------------
-# 13. Final decision layer
+# 13. Behavior-driven insights
 # ---------------------------------------------------------
 
 st.divider()
-st.header("7. Experiment Decision")
+st.header("7. Behavior-Driven Insights")
+
+st.caption(
+    "Prioritized analytical signals and recommended "
+    "investigation paths. These are not causal conclusions."
+)
+
+insights_df = data["insights"].copy()
+
+insights_df = insights_df.sort_values(
+    "rank"
+)
+
+for _, insight_row in insights_df.iterrows():
+
+    rank = int(
+        insight_row["rank"]
+    )
+
+    priority = insight_row[
+        "priority"
+    ]
+
+    finding = insight_row[
+        "insight"
+    ]
+
+    recommendation = insight_row[
+        "recommended_investigation"
+    ]
+
+    if priority == "HIGH":
+
+        st.error(
+            f"Rank {rank} | HIGH PRIORITY"
+        )
+
+    elif priority == "MEDIUM":
+
+        st.warning(
+            f"Rank {rank} | MEDIUM PRIORITY"
+        )
+
+    else:
+
+        st.info(
+            f"Rank {rank} | LOW PRIORITY"
+        )
+
+    st.markdown(
+        f"**Finding:** {finding}"
+    )
+
+    st.markdown(
+        f"**Recommended investigation:** {recommendation}"
+    )
+
+    st.divider()
+
+
+# ---------------------------------------------------------
+# 14. Final decision layer
+# ---------------------------------------------------------
+
+st.header("8. Experiment Decision")
 
 statistically_significant = (
     summary["p_value"] < 0.05
@@ -558,7 +627,7 @@ else:
 
 
 # ---------------------------------------------------------
-# 14. Footer
+# 15. Footer
 # ---------------------------------------------------------
 
 st.divider()
